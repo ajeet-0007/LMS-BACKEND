@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Get,
   Req,
 } from '@nestjs/common';
 import { SectionService } from './section.service';
@@ -31,6 +32,20 @@ export class SectionController {
           cause: error,
         },
       );
+    }
+  }
+
+  @Get('get-sections')
+  async getSectionsData(){
+    try {
+        const section = await this.sectionService.getSectionData();
+        return section;
+    } catch (error) {
+        console.log(error);
+        throw new HttpException({
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: "Internal Server Error"
+        }, HttpStatus.INTERNAL_SERVER_ERROR, {cause: error})
     }
   }
 }
