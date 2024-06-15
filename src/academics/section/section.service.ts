@@ -8,7 +8,7 @@ export class SectionService {
 
     }
 
-    async addSection(sectionName: string): Promise<{ success: boolean }> {
+    async addSection(sectionName: string): Promise<{ success: boolean, data_found: boolean }> {
         // Call the stored procedure
         const [results] = await this.connection.query(
           'CALL AddSection(?)', 
@@ -17,6 +17,7 @@ export class SectionService {
     
         // Extract the success flag from the results
         const success = results[0].success;
-        return { success: !!success };
+        const data_found = results[0].data_found;
+        return { success: !!success, data_found: !!data_found };
     }
 }
