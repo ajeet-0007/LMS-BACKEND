@@ -18,11 +18,11 @@ export class SectionController {
   async insertSectionData(@Body('section') section: string) {
     try {
       const result = await this.sectionService.addSection(section);
-      if (result.success && !result.data_found) return result.success;
+      if (result.success && !result.data_found) return {success: result.success};
       else return { message: 'Record Already Exist', result };
     } catch (error) {
       console.log(error);
-      throw new HttpException(
+      throw new HttpException( 
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Internal Server Error',
