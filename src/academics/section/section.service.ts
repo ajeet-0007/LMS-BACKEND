@@ -25,4 +25,11 @@ export class SectionService {
     const dataFound = flag[0].data_found;
     return { sections, dataFound: !!dataFound };
   }
+
+  async deleteSection(sectionID: Number): Promise<{success: boolean; dataFound: boolean}>{
+    const [results] = await this.connection.query('CALL DeleteSection(?)', [sectionID, ]);
+    const success = results[0]?.success;
+    const dataFound = results[0]?.data_found;
+    return {success: !!success, dataFound: !!dataFound}
+  }
 }
