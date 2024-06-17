@@ -9,6 +9,8 @@ import {
   Delete,
   Req,
   Param,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { SectionService } from './section.service';
 
@@ -37,6 +39,7 @@ export class SectionController {
     }
   }
 
+
   @Get('get-sections')
   async getSectionsData(){
     try {
@@ -48,6 +51,22 @@ export class SectionController {
             status: HttpStatus.INTERNAL_SERVER_ERROR,
             message: "Internal Server Error"
         }, HttpStatus.INTERNAL_SERVER_ERROR, {cause: error})
+    }
+  }
+
+  @Put('update-section')
+  async updateSection(@Query() query: any){
+    try {
+      const result = await this.sectionService.updateSection(query?.section_id, query?.section_name);
+      if (result.success && result.dataFound && !result?.sectionExist) return {message: "Record Updated Successfully",result: {success: result.success}};
+      else if(result?.sectionExist) return {message: "Record Already Exist", result: {success: result.success}}
+      else return { message: 'Record Does Not Exist', result };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Internal Server Error"
+      }, HttpStatus.INTERNAL_SERVER_ERROR, {cause: error})
     }
   }
 

@@ -26,6 +26,14 @@ export class SectionService {
     return { sections, dataFound: !!dataFound };
   }
 
+  async updateSection(sectionID: Number, sectionName: String): Promise<{success: boolean; dataFound: boolean, sectionExist: boolean}> {
+    const [results] = await this.connection.query('CALL UpdateSection(?, ?)', [sectionID, sectionName]);
+    const success = results[0]?.success;
+    const dataFound = results[0]?.data_found;
+    const sectionExist = results[0]?.name_exists;
+    return {success: !!success, dataFound: !!dataFound, sectionExist: !!sectionExist}
+  }
+
   async deleteSection(sectionID: Number): Promise<{success: boolean; dataFound: boolean}>{
     const [results] = await this.connection.query('CALL DeleteSection(?)', [sectionID, ]);
     const success = results[0]?.success;
