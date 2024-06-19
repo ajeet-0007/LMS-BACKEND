@@ -26,4 +26,19 @@ export class StreamService {
         const dataFound = flag[0]?.data_found;
         return { streams, dataFound: !!dataFound };
       }
+
+      async updateSection(streamId: Number, streamName: String): Promise<{success: boolean; dataFound: boolean, streamExist: boolean}> {
+        const [results] = await this.connection.query('CALL UpdateStream(?, ?)', [streamId, streamName]);
+        const success = results[0]?.success;
+        const dataFound = results[0]?.data_found;
+        const streamExist = results[0]?.stream_exists;
+        return {success: !!success, dataFound: !!dataFound, streamExist: !!streamExist}
+      }
+
+      async deleteStream(streamId: Number): Promise<{success: boolean; dataFound: boolean}>{
+        const [results] = await this.connection.query('CALL DeleteStream(?)', [streamId, ]);
+        const success = results[0]?.success;
+        const dataFound = results[0]?.data_found;
+        return {success: !!success, dataFound: !!dataFound}
+      }
 }
