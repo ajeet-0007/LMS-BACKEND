@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, HttpStatus, Get } from '@nestjs/common';
 import { StreamService } from './stream.service';
 
 @Controller('stream')
@@ -24,6 +24,20 @@ export class StreamController {
           cause: error,
         },
       );
+    }
+  }
+
+  @Get('get-stream')
+  async getSectionsData(){
+    try {
+        const streams = await this.streamService.getStreamData();
+        return streams;
+    } catch (error) {
+        console.log(error);
+        throw new HttpException({
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: "Internal Server Error"
+        }, HttpStatus.INTERNAL_SERVER_ERROR, {cause: error})
     }
   }
 }

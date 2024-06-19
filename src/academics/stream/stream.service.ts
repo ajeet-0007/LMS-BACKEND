@@ -20,4 +20,10 @@ export class StreamService {
 
         return { success: !!success, dataFound: !!dataFound , streamId: streamId};
       }
+
+      async getStreamData(): Promise<{ streams: any[]; dataFound: Boolean }> {
+        const [streams, flag] = await this.connection.query('CALL GetStreams()');
+        const dataFound = flag[0]?.data_found;
+        return { streams, dataFound: !!dataFound };
+      }
 }
