@@ -5,12 +5,12 @@ import { SubjectService } from './subject.service';
 @Controller('subject')
 export class SubjectController {
     constructor(private readonly subjectService: SubjectService){}
-    @UseInterceptors(FileInterceptor('file'))
+    @UseInterceptors(FileInterceptor('subject_image'))
     @Post('add-subject')
     
-    async addSubject(@Body() body: any, @UploadedFile() file: Express.Multer.File){
+    async addSubject(@Body() body: any, @UploadedFile() subject_image: Express.Multer.File){
        try{
-       const result = await this.subjectService.addSubject(body, file.buffer.toString('base64'));
+       const result = await this.subjectService.addSubject(body, subject_image.buffer.toString('base64'));
        if(result?.success && !result?.dataFound) return {message: "Record Inserted Successfully", result: {success: result?.success, subjectId : result?.subjectId}};
        else return { message: 'Record Already Exist', result };
        } catch(error){
