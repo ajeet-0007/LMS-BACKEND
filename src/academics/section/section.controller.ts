@@ -22,7 +22,7 @@ export class SectionController {
   async insertSectionData(@Body('section') section: string) {
     try {
       const result = await this.sectionService.addSection(section);
-      if (result.success && !result.data_found) return {message: "Record Inserted Successfully",result: {success: result.success}};
+      if (result.success && !result.data_found) return {message: "Record Inserted Successfully",result: {success: result.success,section_id: result.section_id}};
       else return { message: 'Record Already Exist', result };
     } catch (error) {
       console.log(error);

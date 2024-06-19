@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import { Connection, IntegerType } from 'typeorm';
 
 @Injectable()
 export class SectionService {
@@ -8,7 +8,7 @@ export class SectionService {
 
   async addSection(
     sectionName: string,
-  ): Promise<{ success: boolean; data_found: boolean }> {
+  ): Promise<{ success: boolean; data_found: boolean; section_id: Number }> {
     // Call the stored procedure
     const [results] = await this.connection.query('CALL AddSection(?)', [
       sectionName,
@@ -17,7 +17,8 @@ export class SectionService {
     // Extract the success flag from the results
     const success = results[0].success;
     const data_found = results[0].data_found;
-    return { success: !!success, data_found: !!data_found };
+    const section_id = results[0].section_id;
+    return { success: !!success, data_found: !!data_found, section_id: section_id };
   }
 
   async getSectionData(): Promise<{ sections: any[]; dataFound: Boolean }> {
