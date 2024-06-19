@@ -12,5 +12,10 @@ export class SubjectService {
             const dataFound = results[0]?.data_found;
             return {success: !!success, subjectId: subjectId, dataFound: dataFound}
         }
-    
+      
+        async getSubjects() : Promise<{subjects: any; success: boolean}>{
+            const [subjects, flag] = await this.connection.query('CALL GetSubjects()');
+            const success = flag[0]?.data_found
+            return {subjects, success: !!success}
+        }
 }
