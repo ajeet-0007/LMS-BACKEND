@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Global, Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/typeorm';
 import { Connection, IntegerType } from 'typeorm';
 
+@Global()
 @Injectable()
 export class StreamService {
     constructor(@InjectConnection() private readonly connection: Connection) {}
