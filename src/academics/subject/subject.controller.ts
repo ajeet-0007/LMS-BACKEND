@@ -3,6 +3,7 @@ import {
   Controller,
   Post,
   Get,
+  Put,
   Delete,
   UploadedFile,
   UseInterceptors,
@@ -59,6 +60,35 @@ export class SubjectController {
             status: HttpStatus.INTERNAL_SERVER_ERROR,
             message: "Internal Server Error"
         }, HttpStatus.INTERNAL_SERVER_ERROR, {cause: error})
+    }
+  }
+
+  @UseInterceptors(FileInterceptor('subject_image'))
+  @Put('update-subject')
+  async updateSection(@Body() body: any,
+  @UploadedFile() subject_image: Express.Multer.File,){
+    try {
+      const result = await this.subjectService.updateSubject(
+        body,
+        subject_image.buffer.toString('base64'),
+      );
+      if (result.success && result.dataFound && !result?.subjectExist)
+        return {message: "Record Updated Successfully",result: {success: result.success},
+        };
+        else if(result?.subjectExist) return {message: "Record Already Exist", result: {success: result.success}}
+        else return { message: 'Record Does Not Exist', result };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        {
+          cause: error,
+        },
+      );
     }
   }
 
