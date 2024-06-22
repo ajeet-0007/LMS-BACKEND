@@ -3,10 +3,12 @@ import {
   Controller,
   Post,
   Get,
+  Delete,
   UploadedFile,
   UseInterceptors,
   HttpException,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SubjectService } from './subject.service';
@@ -53,6 +55,21 @@ export class SubjectController {
         return subjects;
     } catch (error) {
         console.log(error);
+        throw new HttpException({
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: "Internal Server Error"
+        }, HttpStatus.INTERNAL_SERVER_ERROR, {cause: error})
+    }
+  }
+
+  @Delete('delete-subject/:subject_id')
+  async deleteSubjects(@Param() params: any){
+    try {
+      const result = await this.subjectService.deleteSubject(params?.subject_id);
+      if (result.success && result.dataFound) return {message: "Record Deleted Successfully",result: {success: result.success}};
+      else return { message: 'Record Does Not Exist', result };
+    } catch (error) {
+      console.log(error);
         throw new HttpException({
             status: HttpStatus.INTERNAL_SERVER_ERROR,
             message: "Internal Server Error"

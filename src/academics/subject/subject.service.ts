@@ -18,4 +18,11 @@ export class SubjectService {
             const success = flag[0]?.data_found
             return {subjects, success: !!success}
         }
+
+        async deleteSubject(subjectId: Number): Promise<{success: boolean; dataFound: boolean}>{
+            const [results] = await this.connection.query('CALL DeleteSubject(?)', [subjectId, ]);
+            const success = results[0]?.success;
+            const dataFound = results[0]?.data_found;
+            return {success: !!success, dataFound: !!dataFound}
+        }
 }
