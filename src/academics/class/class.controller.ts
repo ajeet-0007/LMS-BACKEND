@@ -62,4 +62,18 @@ export class ClassController {
       );
     }
   }
+
+  @Get('get-classes')
+  async getClassesData(){
+    try {
+        const classes = await this.classService.getClassesData();
+        return classes;
+    } catch (error) {
+        console.log(error);
+        throw new HttpException({
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: "Internal Server Error"
+        }, HttpStatus.INTERNAL_SERVER_ERROR, {cause: error})
+    }
+  }
 }

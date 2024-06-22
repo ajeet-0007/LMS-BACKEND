@@ -19,4 +19,10 @@ export class ClassService {
         const classId = results[0]?.class_id;
         return { success: !!success, dataFound: !!dataFound, classId: classId };
       }
+
+      async getClassesData(): Promise<{ classes: any[]; dataFound: Boolean }> {
+        const [classes, flag] = await this.connection.query('CALL GetClasses()');
+        const dataFound = flag[0].data_found;
+        return { classes, dataFound: !!dataFound };
+      }
 }
