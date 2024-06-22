@@ -26,7 +26,7 @@ export class SubjectController {
     try {
       const result = await this.subjectService.addSubject(
         body,
-        subject_image.buffer.toString('base64'),
+        `data:${subject_image?.mimetype};base64,${subject_image.buffer.toString('base64')}`,
       );
       if (result?.success && !result?.dataFound)
         return {
@@ -70,7 +70,7 @@ export class SubjectController {
     try {
       const result = await this.subjectService.updateSubject(
         body,
-        subject_image.buffer.toString('base64'),
+        `data:${subject_image?.mimetype};base64,${subject_image.buffer.toString('base64')}`,
       );
       if (result.success && result.dataFound && !result?.subjectExist)
         return {message: "Record Updated Successfully",result: {success: result.success},
