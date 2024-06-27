@@ -98,7 +98,7 @@ export class ClassController {
   @Put('update-class/:class_id')
   async updateClass(@Body() body: any, @Param() params: any){
     try {
-      const result = await this.classService.updateClass(params?.class_id, body);
+      const result = await this.classService.updateClass(+params?.class_id, body);
       if (result.success && result.dataFound)
         return {message: "Record Updated Successfully",result: {success: result.success},
         };
