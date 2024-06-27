@@ -6,7 +6,8 @@ import {
   HttpStatus,
   Post,
   Delete,
-  Param
+  Param,
+  Put
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { StreamService } from '../stream/stream.service';
@@ -89,6 +90,23 @@ export class ClassController {
       console.log(error);
       throw new HttpException({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: "Internal Server Error"
+      }, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @Put('update-class/:class_id')
+  async updateClass(@Body() body: any, @Param() params: any){
+    try {
+      const result = await this.classService.updateClass(params?.class_id, body);
+      if (result.success && result.dataFound)
+        return {message: "Record Updated Successfully",result: {success: result.success},
+        };
+        else return { message: 'Record Does Not Exist', result };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException({
+        status:  HttpStatus.INTERNAL_SERVER_ERROR,
         message: "Internal Server Error"
       }, HttpStatus.INTERNAL_SERVER_ERROR)
     }

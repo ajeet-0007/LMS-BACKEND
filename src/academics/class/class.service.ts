@@ -32,4 +32,11 @@ export class ClassService {
         const dataFound = results[0]?.data_found;
         return {success: !!success, dataFound: !!dataFound};
       }
+
+      async updateClass(class_id: Number, class_json : JSON): Promise<{success: boolean; dataFound: boolean}>{
+        const [results] = await this.connection.query('Call UpdateClassFromJson(?, ?)', [class_id, JSON.stringify(class_json)]);
+        const success = results[0]?.success;
+        const dataFound = results[0]?.data_found;
+        return {success:!!success, dataFound: !!dataFound}
+      }
 }
