@@ -25,4 +25,11 @@ export class ClassService {
         const dataFound = flag[0].data_found;
         return { classes, dataFound: !!dataFound };
       }
+
+      async deleteClass(class_id: Number): Promise<{success: boolean; dataFound: boolean}>{
+        const [results] = await this.connection.query('CALL deleteClass(?)', [class_id]);
+        const success = results[0]?.success;
+        const dataFound = results[0]?.data_found;
+        return {success: !!success, dataFound: !!dataFound};
+      }
 }
