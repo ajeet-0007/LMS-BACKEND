@@ -50,7 +50,7 @@ export class ClassController {
       if (result.success && !result.dataFound)
         return {
           message: 'Record Inserted Successfully',
-          result: { success: result.success, section_id: result.classId },
+          result: { success: result.success, class_id: result.classId },
         };
       else return { message: 'Record Already Exist', result };
     } catch (error) {
